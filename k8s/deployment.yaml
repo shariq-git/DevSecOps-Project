@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: netflix-app
+  name: netflix-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: netflix-app
+  template:
+    metadata:
+      labels:
+        app: netflix-app
+    spec:
+      containers:
+      - image: shariqdev123/netflix:version1
+        name: netflix-app
+      imagePullSecrets:
+      - name: regcred
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: netflix-app
+  name: netflix-app
+spec:
+  ports:
+  - nodePort: 30007
+    port: 80
+  selector:
+    app: netflix-app
+  type: NodePort
